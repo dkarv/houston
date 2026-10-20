@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.turbo/
+.expo/
+web-build/
+*.log
+.env
+.env.*
+!.env.example
+data/
+test-results/
+playwright-report/
+e2e/.data/
+apps/desktop/release/

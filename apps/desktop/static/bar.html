@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src 'self'" />
+    <style>
+      html, body { margin: 0; height: 100%; background: #0b3d91; color: white; overflow: hidden;
+        font: 600 20px system-ui, sans-serif; -webkit-user-select: none; }
+      body { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 16px; }
+      button { font: 800 22px system-ui, sans-serif; background: #c62828; color: white; border: 0;
+        border-radius: 12px; padding: 10px 28px; cursor: pointer; }
+      button:focus-visible { outline: 3px solid white; }
+    </style>
+  </head>
+  <body>
+    <span id="text"></span>
+    <button id="stop"></button>
+    <script src="bar.js"></script>
+  </body>
+</html>

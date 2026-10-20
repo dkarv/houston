@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: npx playwright install --with-deps chromium
+        working-directory: e2e
+      - run: pnpm --filter @houston/desktop build
+      - name: End-to-end tests
+        run: xvfb-run -a pnpm e2e
+        env:
+          PLAYWRIGHT_CHANNEL: ''

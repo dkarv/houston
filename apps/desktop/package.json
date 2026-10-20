@@ -1,0 +1,90 @@
+{
+  "name": "@houston/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Houston remote help",
+  "author": {
+    "name": "Houston",
+    "email": "help@punzet.me"
+  },
+  "main": "dist/main.js",
+  "houston": {
+    "defaultServer": "https://help.punzet.me"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && electron .",
+    "typecheck": "tsc -p .",
+    "test": "vitest run",
+    "dist": "node build.mjs && electron-builder --publish never"
+  },
+  "dependencies": {
+    "@jitsi/robotjs": "^0.6.24"
+  },
+  "devDependencies": {
+    "@houston/protocol": "workspace:*",
+    "@types/node": "^24.0.0",
+    "dbus-next": "^0.10.2",
+    "electron": "44.9.2",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5",
+    "zod": "^4.6.7"
+  },
+  "build": {
+    "appId": "app.houston.desktop",
+    "productName": "Houston",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**",
+      "static/**",
+      "package.json"
+    ],
+    "protocols": [
+      {
+        "name": "Houston",
+        "schemes": [
+          "houston"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.utilities",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Houston uses the microphone so you can talk to your helper.",
+        "NSCameraUsageDescription": "Houston uses the camera so your helper can see you, only when you turn it on."
+      }
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Network",
+      "executableName": "houston",
+      "syncDesktopName": true
+    },
+    "executableName": "houston",
+    "deb": {
+      "packageName": "houston"
+    },
+    "artifactName": "Houston-${version}-${arch}.${ext}"
+  },
+  "desktopName": "houston.desktop",
+  "homepage": "https://help.punzet.me"
+}

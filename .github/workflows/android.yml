@@ -1,0 +1,53 @@
+# Builds the Android app. Without signing secrets the release APK is signed with the
+# debug key (installable for testing, not for Google Play). Also proves the Kotlin
+# module (apps/app/modules/houston-android) compiles.
+name: Android app
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    paths: ['apps/app/**', 'packages/**', 'pnpm-lock.yaml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - name: Generate the native project
+        working-directory: apps/app
+        run: npx expo prebuild --platform android --no-install
+        env:
+          CI: 1
+      - name: Build the APK
+        working-directory: apps/app/android
+        run: ./gradlew assembleRelease --no-daemon
+      - name: Name the APK
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          [ "$GITHUB_REF_TYPE" = tag ] || version="$(git rev-parse --short HEAD)"
+          cp apps/app/android/app/build/outputs/apk/release/app-release.apk "Houston-${version}.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: houston-android
+          path: Houston-*.apk
+      - name: Attach to the release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Houston-*.apk

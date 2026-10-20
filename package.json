@@ -1,0 +1,28 @@
+{
+  "name": "houston",
+  "private": true,
+  "packageManager": "pnpm@10.34.7",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "e2e": "pnpm --filter @houston/app build:web && pnpm --filter @houston/desktop build && pnpm --filter @houston/e2e e2e",
+    "docker:build": "docker build -f docker/Dockerfile -t houston ."
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@jitsi/robotjs",
+      "electron",
+      "esbuild"
+    ]
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10",
+    "turbo": "^2.11.9"
+  }
+}

@@ -1,0 +1,21 @@
+# Example: docker compose -f docker/compose.yml up -d
+# Put your reverse proxy (TLS) in front of port 3000, including WebSocket upgrades on /api/ws.
+services:
+  houston:
+    image: houston:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    # Host networking: the TURN relay needs a range of UDP ports, which Docker's port
+    # mapping handles poorly.
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      HOUSTON_PUBLIC_URL: https://help.example.com
+      # Public IP of this server, advertised for relayed connections.
+      HOUSTON_TURN_EXTERNAL_IP: 203.0.113.10
+    volumes:
+      - houston-data:/data
+
+volumes:
+  houston-data:

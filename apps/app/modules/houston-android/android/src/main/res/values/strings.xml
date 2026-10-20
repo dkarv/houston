@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="houston_accessibility_label">Houston remote help</string>
+  <string name="houston_accessibility_description">Lets the person helping you tap and type on this phone during a Houston call, only after you allow it in the call. You can stop it at any time with the Stop button.</string>
+</resources>

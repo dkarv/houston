@@ -1,0 +1,11 @@
+**/node_modules
+**/dist
+**/.expo
+**/.turbo
+**/data
+e2e/.data
+e2e/test-results
+.git
+apps/desktop/release
+apps/app/android
+apps/app/ios
